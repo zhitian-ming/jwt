@@ -24,7 +24,7 @@ public class JwtDemo {
     private static volatile KeyStore keyStore;
 
     @Test
-    public void createJwt(String[] args) {
+    public void createJwt() {
         //密钥库文件
         String keystore = "yj.keystore";
         //密钥库密码
