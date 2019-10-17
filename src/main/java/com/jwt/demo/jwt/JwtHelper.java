@@ -57,15 +57,14 @@ public class JwtHelper {
             KeyPair keyPair = new KeyPair(publicKey, key);
             return (RSAPrivateKey) keyPair.getPrivate();
         } catch (KeyStoreException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
         } catch (UnrecoverableKeyException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
         } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
         }
-        return null;
     }
 
     public static RSAPublicKey getPublicKey(String keyFile) {
@@ -113,11 +112,10 @@ public class JwtHelper {
                 throw new RuntimeException(var11);
             } catch (NoSuchAlgorithmException var12) {
                 throw new IllegalStateException(var12);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+            } catch (UnsupportedEncodingException var13) {
+                throw new IllegalStateException(var13);
             }
         }
-        return null;
     }
 
     private static String getKeyString(String keyFile) {
@@ -125,8 +123,7 @@ public class JwtHelper {
             InputStream inputStream = JwtDemo.class.getClassLoader().getResourceAsStream(keyFile);
             return IOUtils.toString(inputStream, "utf-8");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
-        return null;
     }
 }

@@ -56,7 +56,7 @@ public class JwtDemo {
     @Test
     public void checkToken() {
 
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJuYW1lIjoiemhhbmdzYW4iLCJleHAiOjE1NzEyOTE2MzAsInVzZXJJZCI6MzIxNDUsImlhdCI6MTU3MTI5MTYxMH0.JaXH3UCNmSUSBtC76K4ApR1NfcVYL1engQapkL-mnzzROVavXUVzu5_sPN4leodUAJgVFUmL1FsrE6Ns19tv-rxK76Kn4AmSeHMKemkUMf4XRkaW2IhIstq0RNpKBOxZcu3Q1L7vPjB1Du6yKvH4RwXQDSRnPcQPjcl0onmPnaNKG0RGfUh4dF8SnKq2a7F1ETNpGNjaauACPC0neuukcSSJkOnRqpalbzm2H-63PwAXX87KiFZM220c2LGxE84pQX7WM1AyqO8E9CCTU_U9O_hOSQr17b_npmrT6c3IxXycOmiK7ffulRt2QV3jJ1G1kS3-Bcvdv-qR_r1skiC2EA";
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJuYW1lIjoiemhhbmdzYW4iLCJleHAiOjE1NzEyOTQwMTgsInVzZXJJZCI6MzIxNDUsImlhdCI6MTU3MTI5Mzk5OH0.YeavYaRUy1MSYXadHKncpV9NPALs4qVhRUyYeGU1FvTyoJRgE5V0IbMlS3z1fusl5PWROcWcjbWHZZJ7jLEGy6BOGLamfbAqkf5Z0_7DrzaDeorz3CHTRq-kl6C8maxkysU4mekVnMIe4C88jeAIZnysbAO5QvHiH0B0czW9sdcZEwMNtqnNOAVyrAf9NYY31u6_Zp6fD9Tf4J90w4ibNwyZsUaE2IL-CL4qBlNkm6Sbkk8i1p1uMyxjIGMI3_xF_rHV3I_-hYLGmD15G_K-CG2_g-PTzG_zyLtkND6yVTGQ-MrGyrYfmuLk8nqLvaxytCaxekA0Pdl9tAf6CTqmvw";
 
         RSAPublicKey key = JwtHelper.getPublicKey("publickey.txt");
         Jwt jwt = Jwts.parser().setSigningKey(key).parse(token);
