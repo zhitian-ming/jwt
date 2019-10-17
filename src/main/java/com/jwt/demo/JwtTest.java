@@ -21,10 +21,10 @@ public class JwtTest {
     @Test
     public void testCreateJwt() {
         //证书文件
-        String key_location = "xc.keystore";
+        String key_location = "yj.keystore";
 
         //密钥库密码
-        String keystore_password = "xuechengkeystore";
+        String keystore_password = "yjpass";
 
         //访问路径
         ClassPathResource classPathResource = new ClassPathResource(key_location);
@@ -32,10 +32,10 @@ public class JwtTest {
         //密钥工厂
         KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(classPathResource, keystore_password.toCharArray());
 
-        //密钥的密码，此密码和别名匹配
-        String keypassword = "xuecheng";
         //密钥别名
-        String alias = "xckey";
+        String alias = "yjkey";
+        //密钥的密码，此密码和别名匹配
+        String keypassword = "yjpass";
         //密钥对（密钥和公钥）
         KeyPair keyPair = keyStoreKeyFactory.getKeyPair(alias, keypassword.toCharArray());
         //私钥
