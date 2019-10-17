@@ -18,6 +18,8 @@ import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.*;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -46,7 +48,12 @@ public class JwtDemo {
         Map<String, Object> payload = new HashMap<>();
         payload.put("name", "zhangsan");
         payload.put("userId", 32145);
-        String compact = Jwts.builder().setHeader(headerMap).setPayload(JSON.toJSONString(payload))
+
+        Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(currentDate.getTime() + 20000));
+        Date expTime = calendar.getTime();
+        String compact = Jwts.builder().setHeader(headerMap).setClaims(payload).setIssuedAt(currentDate).setExpiration(expTime)
                 .signWith(SignatureAlgorithm.RS256, privateKey).compact();
         System.out.println(compact);
         /*
@@ -90,7 +97,7 @@ public class JwtDemo {
     @Test
     public void decode() {
 
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJuYW1lIjoiemhhbmdzYW4iLCJ1c2VySWQiOjMyMTQ1fQ.cDY2x4pnb_ddBLtOZyJ69Ih5_SzLiP7HxTaj176vU88G9r9C1Xp5zTwSyq-TGEBCPxWPkipPTKX4p3ouuz_0snOxf7IGU9K3j2vDstuZBuDAgC7aLSWEzcyw9thRtbHL0tOV7xlD3VzUR01EoevYJSWWiiJ1eCig5U2-fhIH3PgP0ZrzbmdmIRa_xcALeBLwJdwdKje5LEdLm-vm89z6vCul-RHcLK76X6qLSYxHK20KDoRpzNDoonAGDPhqoLBitKOIFd-TlzRKHgruBgFqfAaWaodjZF_yRmlqWleErFP5oAIhxXxl8TKEcwzqDVc9FzqRvAtYwNR2Kzka8iAItA";
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJuYW1lIjoiemhhbmdzYW4iLCJleHAiOjE1NzEyODA5NDAsInVzZXJJZCI6MzIxNDUsImlhdCI6MTU3MTI4MDkyMH0.kAoVTkttPw9YFga1FRuMoEC4swx5IGH1yOEYoSZ8ySH_jBjzQ-H4rGZGBrHpR984c5c6okIxONlUcY-RVph_0P1GrGY9PY5MhUhNgOHRUDTD_Z_HP8zxeHNIj6uoPWMC_U5M9ubH4QokOBoy0SZu43BgZmOlN5H1o2iVfbLzyWm7kLITQJFDSSAIeviXUxqii2DRhG8uR_UlsMBbTup1Vn_hYavOQpP-msPd-k6zDLo7TXy1IjoNvH_wu1bbANOAkUSTyFYe3wmXh18pfvyuRXTXqo2mnPHxcOJFfbR_e-MjT7sXktEi_3F7cUy3Sn78lbigBgw5j3wE09tzgq4fHQ";
 
         RSAPublicKey key = getPublicKey("publickey.txt");
 
