@@ -53,13 +53,14 @@ public class JwtDemo {
     }
 
     @Test
-    public void decode() {
+    public void checkToken() {
 
         String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJuYW1lIjoiemhhbmdzYW4iLCJleHAiOjE1NzEyODM2ODQsInVzZXJJZCI6MzIxNDUsImlhdCI6MTU3MTI4MzY2NH0.ImmHA1uRfU1c3VONcQuVe3nbOmjPlnxupRALqIEH6l5u3YU3UumiAjKk8XWIyumkNved1kO3TLcC8SZli8IQ12FuxIFSoAzt9ZOCSsJyMqEY9r6KglUi8K8G8PMjKcecIBMBMHiYGjnq-H7Veo3hWQUxfQWvTh4iAjyM9aybBCvUzfXGQXeyAC7Wb200gqcSpajk9NPRuf2kb71R-WHGnIFwvX8_GQb7CwtJZOHTsjNyAXMrHq6wsXxQInmjynmFgC_IpCSc2YEh93mGfRqMQPViNGHJZQS7EOujjR19HoOEcj_Q92IuxZfrIMf2EpsxqiSz_H6uTQVZu5_KV7asmQ";
 
         RSAPublicKey key = getPublicKey("publickey.txt");
 
         Jwt jwt = Jwts.parser().setSigningKey(key).parse(token);
+
         Map body = (Map)jwt.getBody();
         Header header = jwt.getHeader();
         System.out.println(header);
