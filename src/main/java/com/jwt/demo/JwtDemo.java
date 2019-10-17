@@ -1,27 +1,20 @@
 package com.jwt.demo;
 
-import com.alibaba.fastjson.JSON;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.util.encoders.Base64;
 import org.junit.Test;
-import org.springframework.security.jwt.codec.Codecs;
-
 import java.io.*;
 import java.security.*;
 import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.*;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,7 +23,8 @@ public class JwtDemo {
     private static final Pattern PEM_DATA = Pattern.compile("-----BEGIN (.*)-----(.*)-----END (.*)-----", 32);
     private static volatile KeyStore keyStore;
 
-    public static void main(String[] args) {
+    @Test
+    public void createJwt(String[] args) {
         //密钥库文件
         String keystore = "yj.keystore";
         //密钥库密码
@@ -45,7 +39,7 @@ public class JwtDemo {
         Map<String, Object> headerMap = new HashMap<String, Object>();
         headerMap.put("alg", SignatureAlgorithm.RS256);
         headerMap.put("typ", "JWT");
-        Map<String, Object> payload = new HashMap<>();
+        Map<String, Object> payload = new HashMap<String, Object>();
         payload.put("name", "zhangsan");
         payload.put("userId", 32145);
 
@@ -62,7 +56,7 @@ public class JwtDemo {
 
     }
 
-    private static RSAPrivateKey getRsaPrivateKey(String keystore_password, String alias, String key_password) {
+    private RSAPrivateKey getRsaPrivateKey(String keystore_password, String alias, String key_password) {
         try {
             if (keyStore == null) {
                 synchronized (JwtDemo.class) {
@@ -97,7 +91,7 @@ public class JwtDemo {
     @Test
     public void decode() {
 
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJuYW1lIjoiemhhbmdzYW4iLCJleHAiOjE1NzEyODA5NDAsInVzZXJJZCI6MzIxNDUsImlhdCI6MTU3MTI4MDkyMH0.kAoVTkttPw9YFga1FRuMoEC4swx5IGH1yOEYoSZ8ySH_jBjzQ-H4rGZGBrHpR984c5c6okIxONlUcY-RVph_0P1GrGY9PY5MhUhNgOHRUDTD_Z_HP8zxeHNIj6uoPWMC_U5M9ubH4QokOBoy0SZu43BgZmOlN5H1o2iVfbLzyWm7kLITQJFDSSAIeviXUxqii2DRhG8uR_UlsMBbTup1Vn_hYavOQpP-msPd-k6zDLo7TXy1IjoNvH_wu1bbANOAkUSTyFYe3wmXh18pfvyuRXTXqo2mnPHxcOJFfbR_e-MjT7sXktEi_3F7cUy3Sn78lbigBgw5j3wE09tzgq4fHQ";
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJuYW1lIjoiemhhbmdzYW4iLCJleHAiOjE1NzEyODM2ODQsInVzZXJJZCI6MzIxNDUsImlhdCI6MTU3MTI4MzY2NH0.ImmHA1uRfU1c3VONcQuVe3nbOmjPlnxupRALqIEH6l5u3YU3UumiAjKk8XWIyumkNved1kO3TLcC8SZli8IQ12FuxIFSoAzt9ZOCSsJyMqEY9r6KglUi8K8G8PMjKcecIBMBMHiYGjnq-H7Veo3hWQUxfQWvTh4iAjyM9aybBCvUzfXGQXeyAC7Wb200gqcSpajk9NPRuf2kb71R-WHGnIFwvX8_GQb7CwtJZOHTsjNyAXMrHq6wsXxQInmjynmFgC_IpCSc2YEh93mGfRqMQPViNGHJZQS7EOujjR19HoOEcj_Q92IuxZfrIMf2EpsxqiSz_H6uTQVZu5_KV7asmQ";
 
         RSAPublicKey key = getPublicKey("publickey.txt");
 
@@ -114,10 +108,10 @@ public class JwtDemo {
             throw new IllegalArgumentException("String is not PEM encoded data");
         } else {
             String type = m.group(1);
-            byte[] content = Codecs.b64Decode(Codecs.utf8Encode(m.group(2)));
             PrivateKey privateKey = null;
 
             try {
+                byte[] content = Base64.decode(m.group(2).getBytes("utf-8"));
                 KeyFactory fact = KeyFactory.getInstance("RSA");
                 PublicKey publicKey;
                 ASN1Sequence seq;
@@ -151,8 +145,11 @@ public class JwtDemo {
                 throw new RuntimeException(var11);
             } catch (NoSuchAlgorithmException var12) {
                 throw new IllegalStateException(var12);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
         }
+        return null;
     }
 
     private String getKeyString(String keyFile) {

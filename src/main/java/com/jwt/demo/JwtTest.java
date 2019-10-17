@@ -1,3 +1,4 @@
+/*
 package com.jwt.demo;
 
 import com.alibaba.fastjson.JSON;
@@ -49,9 +50,11 @@ public class JwtTest {
         Jwt jwt = JwtHelper.encode(JSON.toJSONString(tokenMap), new RsaSigner(aPrivate));
         String token = jwt.getEncoded();
         System.out.println("token=" + token);
-        /**
+        */
+/**
          eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHQiOiIxIiwicm9sZXMiOiJyMDEscjAyIiwibmFtZSI6Im1ydCIsImlkIjoiMTIzIn0.a3pPI4RIGiI-4gYmC5aO_5iqsVaigKb_vSmjTxx-AjtujjBTENxqt6OI4K9ppx0IO3WEebBeOKQr6po-PnQvmMl7aNHPd9KWfKD_he_0Im88nXWU2JBX0ARc85rFiIB190r7kjFqlZrj7YkhwUsccC7PqfiyKg7Y6B7Ca_l98Dx3Zv6VJwYxVU159XlB6G2NGMIRmDbJhnxLUG0zZdOKBs0BsQobU-IRRCI2bEu5zTImimfogNsGciTCS-7CMN8kO4T_rSMwEe66vPMA-IjchsubfseIptYNVu9_QHbc8RNGf3wWrBcZOmTxaCIH-zAo02u1TQXyeeafLQQVzRTt8g
-         */
+         *//*
+
     }
 
     @Test
@@ -69,4 +72,4 @@ public class JwtTest {
         String encoded = jwt.getEncoded();
         System.out.println(encoded);
     }
-}
+}*/
