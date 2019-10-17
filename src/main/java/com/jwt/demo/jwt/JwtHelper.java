@@ -39,13 +39,13 @@ public class JwtHelper {
             }
             return new JwtHelper();
         } catch (IOException e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new IllegalArgumentException(e);
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new IllegalArgumentException(e);
         } catch (KeyStoreException e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new IllegalArgumentException(e);
         } catch (CertificateException e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new IllegalArgumentException(e);
         }
     }
 
@@ -57,13 +57,13 @@ public class JwtHelper {
             KeyPair keyPair = new KeyPair(publicKey, key);
             return (RSAPrivateKey) keyPair.getPrivate();
         } catch (KeyStoreException e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new IllegalArgumentException(e);
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new IllegalArgumentException(e);
         } catch (UnrecoverableKeyException e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new IllegalArgumentException(e);
         } catch (InvalidKeySpecException e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new IllegalArgumentException(e);
         }
     }
 
