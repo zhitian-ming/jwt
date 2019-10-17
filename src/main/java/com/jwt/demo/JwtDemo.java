@@ -28,14 +28,14 @@ public class JwtDemo {
         //密钥库文件
         String keystore = "yj.keystore";
         //密钥库密码
-        String keystore_password = "yjpass";
+        String keystorePassword = "yjpass";
 
         //密钥别名
         String alias = "yjkey";
         //密钥访问密码
-        String key_password = "yjpass";
+        String keyPassword = "yjpass";
 
-        RSAPrivateKey privateKey = getRsaPrivateKey(keystore_password, alias, key_password);
+        RSAPrivateKey privateKey = getRsaPrivateKey(keystore, keystorePassword, alias, keyPassword);
         Map<String, Object> headerMap = new HashMap<String, Object>();
         headerMap.put("alg", SignatureAlgorithm.RS256);
         headerMap.put("typ", "JWT");
@@ -50,24 +50,34 @@ public class JwtDemo {
         String compact = Jwts.builder().setHeader(headerMap).setClaims(payload).setIssuedAt(currentDate).setExpiration(expTime)
                 .signWith(SignatureAlgorithm.RS256, privateKey).compact();
         System.out.println(compact);
-        /*
-        eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJuYW1lIjoiemhhbmdzYW4iLCJ1c2VySWQiOjMyMTQ1fQ.cDY2x4pnb_ddBLtOZyJ69Ih5_SzLiP7HxTaj176vU88G9r9C1Xp5zTwSyq-TGEBCPxWPkipPTKX4p3ouuz_0snOxf7IGU9K3j2vDstuZBuDAgC7aLSWEzcyw9thRtbHL0tOV7xlD3VzUR01EoevYJSWWiiJ1eCig5U2-fhIH3PgP0ZrzbmdmIRa_xcALeBLwJdwdKje5LEdLm-vm89z6vCul-RHcLK76X6qLSYxHK20KDoRpzNDoonAGDPhqoLBitKOIFd-TlzRKHgruBgFqfAaWaodjZF_yRmlqWleErFP5oAIhxXxl8TKEcwzqDVc9FzqRvAtYwNR2Kzka8iAItA
-         */
-
     }
 
-    private RSAPrivateKey getRsaPrivateKey(String keystore_password, String alias, String key_password) {
+    @Test
+    public void decode() {
+
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJuYW1lIjoiemhhbmdzYW4iLCJleHAiOjE1NzEyODM2ODQsInVzZXJJZCI6MzIxNDUsImlhdCI6MTU3MTI4MzY2NH0.ImmHA1uRfU1c3VONcQuVe3nbOmjPlnxupRALqIEH6l5u3YU3UumiAjKk8XWIyumkNved1kO3TLcC8SZli8IQ12FuxIFSoAzt9ZOCSsJyMqEY9r6KglUi8K8G8PMjKcecIBMBMHiYGjnq-H7Veo3hWQUxfQWvTh4iAjyM9aybBCvUzfXGQXeyAC7Wb200gqcSpajk9NPRuf2kb71R-WHGnIFwvX8_GQb7CwtJZOHTsjNyAXMrHq6wsXxQInmjynmFgC_IpCSc2YEh93mGfRqMQPViNGHJZQS7EOujjR19HoOEcj_Q92IuxZfrIMf2EpsxqiSz_H6uTQVZu5_KV7asmQ";
+
+        RSAPublicKey key = getPublicKey("publickey.txt");
+
+        Jwt jwt = Jwts.parser().setSigningKey(key).parse(token);
+        Map body = (Map)jwt.getBody();
+        Header header = jwt.getHeader();
+        System.out.println(header);
+        System.out.println(body);
+    }
+
+    private RSAPrivateKey getRsaPrivateKey(String keystore, String keystorePassword, String alias, String keyPassword) {
         try {
             if (keyStore == null) {
                 synchronized (JwtDemo.class) {
                     if (keyStore == null) {
                         keyStore = KeyStore.getInstance("jks");
-                        InputStream inputStream = JwtDemo.class.getClassLoader().getResourceAsStream("yj.keystore");
-                        keyStore.load(inputStream, keystore_password.toCharArray());
+                        InputStream inputStream = JwtDemo.class.getClassLoader().getResourceAsStream(keystore);
+                        keyStore.load(inputStream, keystorePassword.toCharArray());
                     }
                 }
             }
-            RSAPrivateCrtKey key = (RSAPrivateCrtKey) keyStore.getKey(alias, key_password.toCharArray());
+            RSAPrivateCrtKey key = (RSAPrivateCrtKey) keyStore.getKey(alias, keyPassword.toCharArray());
             RSAPublicKeySpec spec = new RSAPublicKeySpec(key.getModulus(), key.getPublicExponent());
             PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(spec);
             KeyPair keyPair = new KeyPair(publicKey, key);
@@ -86,20 +96,6 @@ public class JwtDemo {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @Test
-    public void decode() {
-
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJuYW1lIjoiemhhbmdzYW4iLCJleHAiOjE1NzEyODM2ODQsInVzZXJJZCI6MzIxNDUsImlhdCI6MTU3MTI4MzY2NH0.ImmHA1uRfU1c3VONcQuVe3nbOmjPlnxupRALqIEH6l5u3YU3UumiAjKk8XWIyumkNved1kO3TLcC8SZli8IQ12FuxIFSoAzt9ZOCSsJyMqEY9r6KglUi8K8G8PMjKcecIBMBMHiYGjnq-H7Veo3hWQUxfQWvTh4iAjyM9aybBCvUzfXGQXeyAC7Wb200gqcSpajk9NPRuf2kb71R-WHGnIFwvX8_GQb7CwtJZOHTsjNyAXMrHq6wsXxQInmjynmFgC_IpCSc2YEh93mGfRqMQPViNGHJZQS7EOujjR19HoOEcj_Q92IuxZfrIMf2EpsxqiSz_H6uTQVZu5_KV7asmQ";
-
-        RSAPublicKey key = getPublicKey("publickey.txt");
-
-        Jwt jwt = Jwts.parser().setSigningKey(key).parse(token);
-        Map body = (Map)jwt.getBody();
-        Header header = jwt.getHeader();
-        System.out.println(header);
-        System.out.println(body);
     }
 
     private RSAPublicKey getPublicKey(String keyFile) {
