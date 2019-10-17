@@ -5,10 +5,6 @@ import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 
-/**
- * @auhtor huangzhao
- * @date 2019/10/17
- */
 public class B64decode {
 
     private static Charset UTF8 = Charset.forName("UTF-8");
